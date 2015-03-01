@@ -26,14 +26,14 @@ public class ProjectRSTest extends BaseIntegrationTest {
 		assertEquals(projectCreated.getIdentifier(), projectFounded.getIdentifier());
 	}
 
-//	@Test
-//	public void createDuplicatedProjectTest() throws Exception {
-//		String projectIdentifier = "PROJECT_01";
-//		projectRestService.createNewProject(projectIdentifier, "Project description");
-//
-//		Response response = projectRestService.createNewProject(projectIdentifier, "Other description");
-//		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-//	}
+	@Test
+	public void createDuplicatedProjectTest() {
+		String projectIdentifier = "PROJECT_01";
+		projectRestService.createNewProject(projectIdentifier, "Project description");
+
+		Response duplicatedProject = projectRestService.createNewProject(projectIdentifier, "Other description");
+		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), duplicatedProject.getStatus());
+	}
 
 	@Test
 	public void returnNonExistentProjectInfo() throws Exception {

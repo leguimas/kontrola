@@ -32,9 +32,14 @@ public class ProjectRS {
 	@POST
 	@Produces("application/json;charset=utf-8")
 	public Response createNewProject(@FormParam("identifier") String identifier,
-			@FormParam("description") String description) throws DuplicatedEntityException {
+			@FormParam("description") String description) {
 		Project newProject = new Project(identifier, description);
-		newProject = projectRepository.save(newProject);
+
+		try {
+			newProject = projectRepository.save(newProject);
+		} catch (DuplicatedEntityException e) {
+			return Response.serverError().entity(e.getError().toJson()).build();
+		}
 
 		return Response.ok(newProject).build();
 	}
