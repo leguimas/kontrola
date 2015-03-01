@@ -1,2 +1,4 @@
-# kontrola
-A useful tool to monitoring some issues and track them.
+appengine-skeleton
+=============================
+
+This is a generated application from the appengine-skeleton archetype.
