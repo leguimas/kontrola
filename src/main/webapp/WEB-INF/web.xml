@@ -14,7 +14,7 @@
 			org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
 		<init-param>
 			<param-name>javax.ws.rs.Application</param-name>
-			<param-value>br.com.kontrola.application.RESTServices</param-value>
+			<param-value>br.com.kontrola.application.web.RESTServices</param-value>
 		</init-param>
 	</servlet>
 

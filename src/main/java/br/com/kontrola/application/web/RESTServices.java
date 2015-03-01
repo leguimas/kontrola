@@ -1,4 +1,4 @@
-package br.com.kontrola.application;
+package br.com.kontrola.application.web;
 
 import java.util.HashSet;
 import java.util.Set;

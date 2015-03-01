@@ -5,14 +5,15 @@ import org.junit.BeforeClass;
 
 import br.com.kontrola.server.TestServer;
 
-public class BaseIntegrationTest {
 
-	private static TestServer server;
+public class BaseWebTest {
+
+	protected static TestServer server = new TestServer();
 
 	@BeforeClass
 	public static void startEnvironment() throws Exception {
-		server = new TestServer();
-		server.enableWebApp();
+		server.enableDataStore();
+		server.enableWebApp(TestServer.DEFAULT_WEB_PORT);
 		server.start();
 	}
 

@@ -9,9 +9,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
-import br.com.kontrola.test.BaseIntegrationTest;
+import br.com.kontrola.test.BaseWebTest;
 
-public class ProjectRSTest extends BaseIntegrationTest {
+public class ProjectRSTest extends BaseWebTest {
 
 	private static final String KONTROLA_URL = "http://localhost:8080/api";
 
