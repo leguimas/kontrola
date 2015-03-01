@@ -23,4 +23,20 @@ public class ProjectTest {
 		assertTrue(projectA.equals(projectA2));
 		assertFalse(projectA.equals(projectB));
 	}
+
+	@Test
+	public void addNewIssue() {
+		Project project = new Project("Issues", "Project with issues");
+		assertEquals(0, project.getIssues().size());
+
+		project.addNewIssue("ISSUE 01");
+		assertEquals(1, project.getIssues().size());
+
+		project.addNewIssue("ISSUE 02");
+		assertEquals(2, project.getIssues().size());
+
+		project.addNewIssue("issue-01");
+		assertEquals(2, project.getIssues().size());
+	}
+
 }

@@ -58,7 +58,11 @@ public class Project {
 			issues = new ArrayList<Issue>();
 		}
 
-		issues.add(new Issue(issueName.trim().toLowerCase()));
+		Issue newIssue = new Issue(issueName.trim().toLowerCase());
+		if (!issues.contains(newIssue)) {
+			issues.add(newIssue);
+		}
+
 		return this;
 	}
 
