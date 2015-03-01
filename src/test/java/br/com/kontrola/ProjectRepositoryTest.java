@@ -6,9 +6,9 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import br.com.kontrola.application.persistence.DuplicatedEntityException;
-import br.com.kontrola.test.BasePersistenceTest;
+import br.com.kontrola.test.BaseIntegrationTest;
 
-public class ProjectRepositoryTest extends BasePersistenceTest {
+public class ProjectRepositoryTest extends BaseIntegrationTest {
 
 	private ProjectRepository repository = new ProjectRepository();
 

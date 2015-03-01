@@ -1,6 +1,6 @@
 package br.com.kontrola;
 
-import static br.com.kontrola.application.persistence.OfyService.ofy;
+import static br.com.kontrola.application.persistence.EncapsulatedObjectifyService.ofy;
 
 import java.util.UUID;
 

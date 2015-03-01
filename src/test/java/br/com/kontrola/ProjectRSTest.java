@@ -1,38 +1,44 @@
 package br.com.kontrola;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
 import org.junit.Test;
 
-import br.com.kontrola.test.BaseWebTest;
+import br.com.kontrola.test.BaseIntegrationTest;
 
-public class ProjectRSTest extends BaseWebTest {
+public class ProjectRSTest extends BaseIntegrationTest {
 
-	private static final String KONTROLA_URL = "http://localhost:8080/api";
+	ProjectRS projectRestService = new ProjectRS();
 
 	@Test
-	public void returnProjectInfoTest() throws Exception {
-		CloseableHttpClient httpRequest = HttpClients.createDefault();
+	public void createNewProjectTest() throws Exception {
+		String projectIdentifier = "NEW_PROJECT";
+		Project projectCreated = (Project) projectRestService
+				.createNewProject(projectIdentifier, "Project description").getEntity();
+		assertNotNull(projectCreated.getKey());
 
-		try {
-			String projectIdentifier = "TEST";
-			HttpGet jiraRequest = new HttpGet(KONTROLA_URL + "/projects/" + projectIdentifier);
+		Project projectFounded = (Project) projectRestService.returnProjectInfo(projectIdentifier).getEntity();
+		assertEquals(projectCreated.getKey(), projectFounded.getKey());
+		assertEquals(projectCreated.getIdentifier(), projectFounded.getIdentifier());
+	}
 
-			CloseableHttpResponse response = httpRequest.execute(jiraRequest);
-			try {
-				String projectInformation = EntityUtils.toString(response.getEntity());
-				assertEquals(projectIdentifier, projectInformation);
-			} finally {
-				response.close();
-			}
-		} finally {
-			httpRequest.close();
-		}
+//	@Test
+//	public void createDuplicatedProjectTest() throws Exception {
+//		String projectIdentifier = "PROJECT_01";
+//		projectRestService.createNewProject(projectIdentifier, "Project description");
+//
+//		Response response = projectRestService.createNewProject(projectIdentifier, "Other description");
+//		assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+//	}
+
+	@Test
+	public void returnNonExistentProjectInfo() throws Exception {
+		Response projectFounded = projectRestService.returnProjectInfo("NOT_FOUND");
+		assertEquals(Status.NOT_FOUND.getStatusCode(), projectFounded.getStatus());
 	}
 
 }

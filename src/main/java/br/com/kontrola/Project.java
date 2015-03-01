@@ -15,6 +15,9 @@ public class Project {
 
 	private String description;
 
+	protected Project() {
+	}
+
 	public Project(String identifier, String description) {
 		this.identifier = identifier.trim().toLowerCase();
 		this.description = description.trim();

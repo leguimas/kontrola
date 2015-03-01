@@ -6,7 +6,7 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 
-public class OfyService {
+public class EncapsulatedObjectifyService {
 
 	static {
 		factory().register(Project.class);
