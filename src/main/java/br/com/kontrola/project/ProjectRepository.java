@@ -1,4 +1,4 @@
-package br.com.kontrola;
+package br.com.kontrola.project;
 
 import static br.com.kontrola.application.persistence.EncapsulatedObjectifyService.ofy;
 
@@ -17,14 +17,17 @@ public class ProjectRepository {
 		return persist(newProject);
 	}
 
-	private Project persist(Project newProject) {
-		newProject.defineKey(UUID.randomUUID().toString());
-		ofy().save().entity(newProject).now();
-		return newProject;
+	private Project persist(Project project) {
+		if (!project.isPersisted()) {
+			project.defineKey(UUID.randomUUID().toString());
+		}
+
+		ofy().save().entity(project).now();
+		return project;
 	}
 
 	private boolean existsProjectWithTheSameIdentifier(Project newProject) {
-		return this.loadByIdentifier(newProject.getIdentifier()) != null;
+		return !newProject.isPersisted() && this.loadByIdentifier(newProject.getIdentifier()) != null;
 	}
 
 	public Project loadByIdentifier(String identifier) {

@@ -1,4 +1,4 @@
-package br.com.kontrola;
+package br.com.kontrola.project;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -21,7 +21,7 @@ public class ProjectRS {
 	@Produces("application/json;charset=utf-8")
 	public Response returnProjectInfo(@PathParam("identifier") String identifier) {
 		Project project = projectRepository.loadByIdentifier(identifier);
-	
+
 		if (project != null) {
 			return Response.ok(project).build();
 		} else {
@@ -42,6 +42,23 @@ public class ProjectRS {
 		}
 
 		return Response.ok(newProject).build();
+	}
+
+	@POST
+	@Path("/{identifier}/issues")
+	@Produces("application/json;charset=utf-8")
+	public Response addNewIssueToProject(@PathParam("identifier") String projectIdentifier,
+			@FormParam("name") String issueName) throws DuplicatedEntityException {
+
+		Project project = projectRepository.loadByIdentifier(projectIdentifier);
+		if (project == null) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+
+		project.addNewIssue(issueName);
+		project = projectRepository.save(project);
+
+		return Response.ok(project).build();
 	}
 
 }

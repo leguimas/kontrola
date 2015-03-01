@@ -1,4 +1,4 @@
-package br.com.kontrola;
+package br.com.kontrola.project;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.junit.Test;
 
+import br.com.kontrola.application.persistence.DuplicatedEntityException;
 import br.com.kontrola.test.BaseIntegrationTest;
 
 public class ProjectRSTest extends BaseIntegrationTest {
@@ -37,8 +38,30 @@ public class ProjectRSTest extends BaseIntegrationTest {
 
 	@Test
 	public void returnNonExistentProjectInfo() throws Exception {
-		Response projectFounded = projectRestService.returnProjectInfo("NOT_FOUND");
-		assertEquals(Status.NOT_FOUND.getStatusCode(), projectFounded.getStatus());
+		Response response = projectRestService.returnProjectInfo("NOT_FOUND");
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void addNewIssueToProject() throws DuplicatedEntityException {
+		String projectIdentifier = "PROJECT_WITH_ISSUE";
+		Project newProject = (Project) projectRestService.createNewProject(projectIdentifier, "Project description")
+				.getEntity();
+		assertEquals(0, newProject.getIssues().size());
+
+		projectRestService.addNewIssueToProject(projectIdentifier, "New issue").getEntity();
+		Project projectWithIssue = (Project) projectRestService.returnProjectInfo(projectIdentifier).getEntity();
+		assertEquals(1, projectWithIssue.getIssues().size());
+
+		projectRestService.addNewIssueToProject(projectIdentifier, "Second issue").getEntity();
+		projectWithIssue = (Project) projectRestService.returnProjectInfo(projectIdentifier).getEntity();
+		assertEquals(2, projectWithIssue.getIssues().size());
+	}
+
+	@Test
+	public void addNewIssueToNonExistentProject() throws DuplicatedEntityException {
+		Response response = projectRestService.addNewIssueToProject("NOT_FOUND", "New issue");
+		assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 	}
 
 }

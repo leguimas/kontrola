@@ -1,6 +1,6 @@
 package br.com.kontrola.application.persistence;
 
-import br.com.kontrola.Project;
+import br.com.kontrola.project.Project;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;

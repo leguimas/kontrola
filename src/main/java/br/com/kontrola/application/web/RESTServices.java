@@ -5,7 +5,7 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
-import br.com.kontrola.ProjectRS;
+import br.com.kontrola.project.ProjectRS;
 
 public class RESTServices extends Application {
 
