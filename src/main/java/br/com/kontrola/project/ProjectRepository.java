@@ -1,9 +1,10 @@
 package br.com.kontrola.project;
 
 import static br.com.kontrola.application.persistence.EncapsulatedObjectifyService.ofy;
+import br.com.kontrola.application.persistence.BaseEntityRepository;
 import br.com.kontrola.application.persistence.DuplicatedEntityException;
 
-public class ProjectRepository {
+public class ProjectRepository extends BaseEntityRepository {
 
 	public Project save(Project newProject) throws DuplicatedEntityException {
 
@@ -12,15 +13,6 @@ public class ProjectRepository {
 		}
 
 		return persist(newProject);
-	}
-
-	private Project persist(Project project) {
-		if (!project.isPersisted()) {
-			project.defineKey();
-		}
-
-		ofy().save().entity(project).now();
-		return project;
 	}
 
 	private boolean existsProjectWithTheSameIdentifier(Project newProject) {

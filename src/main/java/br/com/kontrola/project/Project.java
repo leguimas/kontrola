@@ -3,8 +3,6 @@ package br.com.kontrola.project;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 import br.com.kontrola.application.persistence.BaseEntity;
 
 import com.googlecode.objectify.annotation.Entity;
@@ -54,11 +52,6 @@ public class Project extends BaseEntity {
 		}
 
 		return this;
-	}
-
-	@JsonIgnore
-	public boolean isPersisted() {
-		return key != null;
 	}
 
 	@Override
