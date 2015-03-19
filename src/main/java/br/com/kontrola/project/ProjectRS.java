@@ -16,6 +16,8 @@ public class ProjectRS {
 
 	private ProjectRepository projectRepository = new ProjectRepository();
 
+	private IssueRepository issueRepository = new IssueRepository();
+
 	@GET
 	@Path("/{identifier}")
 	@Produces("application/json;charset=utf-8")
@@ -48,15 +50,19 @@ public class ProjectRS {
 	@Path("/{identifier}/issues")
 	@Produces("application/json;charset=utf-8")
 	public Response addNewIssueToProject(@PathParam("identifier") String projectIdentifier,
-			@FormParam("name") String issueName) throws DuplicatedEntityException {
+			@FormParam("name") String issueName) {
 
 		Project project = projectRepository.loadByIdentifier(projectIdentifier);
 		if (project == null) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
 
-		project.addNewIssue(issueName);
-		project = projectRepository.save(project);
+		Issue newIssue = project.addNewIssue(issueName);
+		try {
+			newIssue = issueRepository.save(newIssue);
+		} catch (DuplicatedEntityException e) {
+			return Response.serverError().entity(e.getError().toJson()).build();
+		}
 
 		return Response.ok(project).build();
 	}

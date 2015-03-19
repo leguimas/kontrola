@@ -43,7 +43,7 @@ public class Project extends BaseEntity {
 		return issues;
 	}
 
-	public Project addNewIssue(String issueName) {
+	public Issue addNewIssue(String issueName) {
 		if (issues == null) {
 			issues = new ArrayList<Issue>();
 		}
@@ -53,7 +53,7 @@ public class Project extends BaseEntity {
 			issues.add(newIssue);
 		}
 
-		return this;
+		return newIssue;
 	}
 
 	public Project addIssues(List<Issue> issues) {
