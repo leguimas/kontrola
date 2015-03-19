@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.List;
+
 import org.junit.Test;
 
 import br.com.kontrola.application.persistence.DuplicatedEntityException;
@@ -39,5 +41,18 @@ public class IssueRepositoryTest extends BaseIntegrationTest {
 	public void findIssueNotFound() {
 		Issue issue = repository.loadByNameAndProject("UNEXISTENT NAME", "UNEXISTENT PROJECT");
 		assertNull(issue);
+	}
+
+	public void findIssueByProject() throws DuplicatedEntityException {
+		String project = "FILTER BY PROJECT";
+
+		repository.save(new Issue(project, "NAME 01"));
+		repository.save(new Issue(project, "NAME 02"));
+
+		List<Issue> issuesByProject = repository.loadByProject(project);
+		assertEquals(2, issuesByProject.size());
+
+		issuesByProject = repository.loadByProject("PROJECT WITHOUT ISSUE");
+		assertEquals(0, issuesByProject.size());
 	}
 }
