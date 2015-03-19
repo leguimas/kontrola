@@ -5,15 +5,13 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import br.com.kontrola.application.persistence.BaseEntity;
+
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
 @Entity
-public class Project {
-
-	@Id
-	private String key;
+public class Project extends BaseEntity {
 
 	@Index
 	private String identifier;
@@ -33,10 +31,6 @@ public class Project {
 		this.issues = new ArrayList<Issue>();
 	}
 
-	public String getKey() {
-		return key;
-	}
-
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -47,10 +41,6 @@ public class Project {
 
 	public List<Issue> getIssues() {
 		return issues;
-	}
-
-	protected void defineKey(String key) {
-		this.key = key;
 	}
 
 	public Project addNewIssue(String issueName) {
