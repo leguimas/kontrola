@@ -1,5 +1,6 @@
 package br.com.kontrola.application.persistence;
 
+import br.com.kontrola.project.Issue;
 import br.com.kontrola.project.Project;
 
 import com.googlecode.objectify.Objectify;
@@ -10,6 +11,7 @@ public class EncapsulatedObjectifyService {
 
 	static {
 		factory().register(Project.class);
+		factory().register(Issue.class);
 	}
 
 	public static Objectify ofy() {

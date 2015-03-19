@@ -2,26 +2,37 @@ package br.com.kontrola.project;
 
 import java.util.Date;
 
-public class Issue {
+import br.com.kontrola.application.persistence.BaseEntity;
+
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Index;
+
+@Entity
+public class Issue extends BaseEntity {
 
 	public enum Status {
 		RED, YELLOW, GREEN;
 	}
 
+	@Index
 	private String name;
 
 	private Status status;
 
 	private Date lastUpdate;
 
+	@Index
+	private String project;
+
 	@SuppressWarnings("unused")
 	private Issue() {
 	}
 
-	public Issue(String name) {
+	public Issue(String project, String name) {
 		this.name = name.trim().toLowerCase().replace(" ", "-");
 		this.status = Status.RED;
 		this.lastUpdate = new Date();
+		this.project = project;
 	}
 
 	public String getName() {
@@ -36,6 +47,10 @@ public class Issue {
 		return lastUpdate;
 	}
 
+	public String getProject() {
+		return project;
+	}
+
 	public Issue updateStatus(Status status) {
 		this.status = status;
 		this.lastUpdate = new Date();
@@ -48,6 +63,7 @@ public class Issue {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((project == null) ? 0 : project.hashCode());
 		return result;
 	}
 
@@ -65,7 +81,14 @@ public class Issue {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
+		if (project == null) {
+			if (other.project != null)
+				return false;
+		} else if (!project.equals(other.project))
+			return false;
 		return true;
 	}
+
+
 
 }

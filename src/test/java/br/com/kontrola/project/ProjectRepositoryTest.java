@@ -2,6 +2,7 @@ package br.com.kontrola.project;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
@@ -35,4 +36,9 @@ public class ProjectRepositoryTest extends BaseIntegrationTest {
 		repository.save(duplicatedProject);
 	}
 
+	@Test
+	public void testProjectNotFound() {
+		Project project = repository.loadByIdentifier("NOT FOUND");
+		assertNull(project);
+	}
 }

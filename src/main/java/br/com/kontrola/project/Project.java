@@ -6,6 +6,7 @@ import java.util.List;
 import br.com.kontrola.application.persistence.BaseEntity;
 
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
 
 @Entity
@@ -16,6 +17,7 @@ public class Project extends BaseEntity {
 
 	private String description;
 
+	@Ignore
 	private List<Issue> issues;
 
 	@SuppressWarnings("unused")
@@ -46,11 +48,16 @@ public class Project extends BaseEntity {
 			issues = new ArrayList<Issue>();
 		}
 
-		Issue newIssue = new Issue(issueName.trim().toLowerCase());
+		Issue newIssue = new Issue(this.key, issueName.trim().toLowerCase());
 		if (!issues.contains(newIssue)) {
 			issues.add(newIssue);
 		}
 
+		return this;
+	}
+
+	public Project addIssues(List<Issue> issues) {
+		this.issues = issues;
 		return this;
 	}
 

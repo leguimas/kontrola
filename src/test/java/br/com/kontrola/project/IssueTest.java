@@ -15,7 +15,7 @@ public class IssueTest {
 
 	@Test
 	public void testConstructor() {
-		Issue issue = new Issue("NAME WITH SPACES");
+		Issue issue = new Issue("PROJECT A", "NAME WITH SPACES");
 		assertEquals("name-with-spaces", issue.getName());
 		assertEquals(Status.RED, issue.getStatus());
 		assertNotNull(issue.getLastUpdate());
@@ -23,9 +23,9 @@ public class IssueTest {
 
 	@Test
 	public void testEquals() {
-		Issue issueA = new Issue("A");
-		Issue issueA2 = new Issue("A");
-		Issue issueB = new Issue("B");
+		Issue issueA = new Issue("PROJECT A", "A");
+		Issue issueA2 = new Issue("PROJECT A", "A");
+		Issue issueB = new Issue("PROJECT B", "A");
 
 		assertTrue(issueA.equals(issueA2));
 		assertFalse(issueA.equals(issueB));
@@ -33,7 +33,7 @@ public class IssueTest {
 
 	@Test
 	public void updateStatus() throws InterruptedException {
-		Issue issueA = new Issue("A");
+		Issue issueA = new Issue("PROJECT A", "A");
 		Date lastUpdate = issueA.getLastUpdate();
 
 		Thread.sleep(100);
