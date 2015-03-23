@@ -9,15 +9,19 @@ import br.com.kontrola.project.ProjectRS;
 
 public class RESTServices extends Application {
 
-	private Set<Object> singletons = new HashSet<Object>();
+	private Set<Class<?>> resources = new HashSet<Class<?>>();
 
 	public RESTServices() {
-		singletons.add(new ProjectRS());
+		resources.add(ProjectRS.class);
+		resources.add(com.wordnik.swagger.jaxrs.listing.ApiListingResource.class);
+        resources.add(com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider.class);
+        resources.add(com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON.class);
+        resources.add(com.wordnik.swagger.jaxrs.listing.ResourceListingProvider.class);
 	}
 
 	@Override
-	public Set<Object> getSingletons() {
-		return singletons;
+	public Set<Class<?>> getClasses() {
+		return resources;
 	}
 
 }
