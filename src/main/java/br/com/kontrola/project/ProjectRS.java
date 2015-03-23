@@ -36,6 +36,7 @@ public class ProjectRS {
 		Project project = projectRepository.loadByIdentifier(identifier);
 
 		if (project != null) {
+			project.addIssues(issueRepository.loadByProject(project.getIdentifier()));
 			return Response.ok(project).build();
 		} else {
 			return Response.status(Status.NOT_FOUND).build();
@@ -46,8 +47,9 @@ public class ProjectRS {
 	@Produces("application/json;charset=utf-8")
 	@ApiOperation(value = "Create a new project.", notes = "Returns the persisted project info.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Project persisted.") })
-	public Response createNewProject(@ApiParam(value = "Project identifier.", required = true)  @FormParam("identifier") String identifier,
-			@ApiParam(value = "Project description..", required = true)  @FormParam("description") String description) {
+	public Response createNewProject(
+			@ApiParam(value = "Project identifier.", required = true) @FormParam("identifier") String identifier,
+			@ApiParam(value = "Project description..", required = true) @FormParam("description") String description) {
 		Project newProject = new Project(identifier, description);
 
 		try {
@@ -65,7 +67,8 @@ public class ProjectRS {
 	@ApiOperation(value = "Create a new issue to a specific project.", notes = "Returns the project info and the project issues.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Issue persisted."),
 			@ApiResponse(code = 404, message = "Project not found.") })
-	public Response addNewIssueToProject(@ApiParam(value = "Project identifier.", required = true) @PathParam("identifier") String projectIdentifier,
+	public Response addNewIssueToProject(
+			@ApiParam(value = "Project identifier.", required = true) @PathParam("identifier") String projectIdentifier,
 			@ApiParam(value = "Issue name.", required = true) @FormParam("name") String issueName) {
 
 		Project project = projectRepository.loadByIdentifier(projectIdentifier);
