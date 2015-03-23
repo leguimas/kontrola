@@ -37,10 +37,11 @@ public class IssueTest {
 		Date lastUpdate = issueA.getLastUpdate();
 
 		Thread.sleep(100);
-		issueA.updateStatus(Status.GREEN);
+		issueA.updateStatus(Status.GREEN, "Reason to update", "user");
 
 		assertEquals(Status.GREEN, issueA.getStatus());
 		assertTrue(issueA.getLastUpdate().after(lastUpdate));
+		assertEquals(1, issueA.getChangeLog().size());
 	}
 
 }

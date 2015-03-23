@@ -1,10 +1,13 @@
 package br.com.kontrola.project;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import br.com.kontrola.application.persistence.BaseEntity;
 
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
 
 @Entity
@@ -24,6 +27,9 @@ public class Issue extends BaseEntity {
 	@Index
 	private String project;
 
+	@Ignore
+	private List<IssueChangeLog> changeLog;
+
 	@SuppressWarnings("unused")
 	private Issue() {
 	}
@@ -33,6 +39,8 @@ public class Issue extends BaseEntity {
 		this.status = Status.RED;
 		this.lastUpdate = new Date();
 		this.project = project;
+
+		this.changeLog = new ArrayList<IssueChangeLog>();
 	}
 
 	public String getName() {
@@ -51,9 +59,16 @@ public class Issue extends BaseEntity {
 		return project;
 	}
 
-	public Issue updateStatus(Status status) {
+	public List<IssueChangeLog> getChangeLog() {
+		return changeLog;
+	}
+
+	public Issue updateStatus(Status status, String reason, String user) {
 		this.status = status;
-		this.lastUpdate = new Date();
+		lastUpdate = new Date();
+
+		IssueChangeLog changeLog = new IssueChangeLog(this.key, status, reason, user);
+		this.changeLog.add(changeLog);
 
 		return this;
 	}
@@ -88,7 +103,5 @@ public class Issue extends BaseEntity {
 			return false;
 		return true;
 	}
-
-
 
 }
