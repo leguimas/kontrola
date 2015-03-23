@@ -36,7 +36,7 @@ public class ProjectRS {
 		Project project = projectRepository.loadByIdentifier(identifier);
 
 		if (project != null) {
-			project.addIssues(issueRepository.loadByProject(project.getIdentifier()));
+			project.addIssues(issueRepository.loadByProject(project.getKey()));
 			return Response.ok(project).build();
 		} else {
 			return Response.status(Status.NOT_FOUND).build();
@@ -75,6 +75,8 @@ public class ProjectRS {
 		if (project == null) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
+
+		project.addIssues(issueRepository.loadByProject(project.getKey()));
 
 		Issue newIssue = project.addNewIssue(issueName);
 		try {
