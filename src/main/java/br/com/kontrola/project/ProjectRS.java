@@ -1,5 +1,7 @@
 package br.com.kontrola.project;
 
+import java.util.List;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -26,11 +28,27 @@ public class ProjectRS {
 	private IssueRepository issueRepository = new IssueRepository();
 
 	@GET
+	@Produces("application/json;charset=utf-8")
+	@ApiOperation(value = "Get all projects.", notes = "Returns the projects info and the projects issues.")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Projects found."),
+			@ApiResponse(code = 500, message = "Internal error. Check the message field.") })
+	public Response returnAllProjects() {
+		List<Project> projects = projectRepository.loadAll();
+		
+		for (Project project : projects) {
+			project.addIssues(issueRepository.loadByProject(project.getKey()));
+		}
+
+		return Response.ok(projects).build();
+	}
+
+	@GET
 	@Path("/{identifier}")
 	@Produces("application/json;charset=utf-8")
 	@ApiOperation(value = "Get project info by project identifier", notes = "Returns the project info and the project issues.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Project found."),
-			@ApiResponse(code = 404, message = "Project not found.") })
+			@ApiResponse(code = 404, message = "Project not found."),
+			@ApiResponse(code = 500, message = "Internal error. Check the message field.") })
 	public Response returnProjectInfo(
 			@ApiParam(value = "Project identifier that you want to get the information.", required = true) @PathParam("identifier") String identifier) {
 		Project project = projectRepository.loadByIdentifier(identifier);
@@ -46,7 +64,8 @@ public class ProjectRS {
 	@POST
 	@Produces("application/json;charset=utf-8")
 	@ApiOperation(value = "Create a new project.", notes = "Returns the persisted project info.")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Project persisted.") })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Project persisted."),
+			@ApiResponse(code = 500, message = "Internal error. Check the message field.") })
 	public Response createNewProject(
 			@ApiParam(value = "Project identifier.", required = true) @FormParam("identifier") String identifier,
 			@ApiParam(value = "Project description..", required = true) @FormParam("description") String description) {
@@ -66,7 +85,8 @@ public class ProjectRS {
 	@Produces("application/json;charset=utf-8")
 	@ApiOperation(value = "Create a new issue to a specific project.", notes = "Returns the project info and the project issues.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Issue persisted."),
-			@ApiResponse(code = 404, message = "Project not found.") })
+			@ApiResponse(code = 404, message = "Project not found."),
+			@ApiResponse(code = 500, message = "Internal error. Check the message field.") })
 	public Response addNewIssueToProject(
 			@ApiParam(value = "Project identifier.", required = true) @PathParam("identifier") String projectIdentifier,
 			@ApiParam(value = "Issue name.", required = true) @FormParam("name") String issueName) {
